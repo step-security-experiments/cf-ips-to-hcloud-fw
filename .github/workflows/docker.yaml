@@ -74,8 +74,6 @@ jobs:
         uses: docker/metadata-action@8e5442c4ef9f78752691e2d8f8d19755c6f78e81 # v5.5.1
         with:
           images: |
-            ${{ vars.DOCKERHUB_USERNAME }}/cf-ips-to-hcloud-fw
-            quay.io/${{ vars.QUAY_USERNAME }}/cf-ips-to-hcloud-fw
             ghcr.io/${{ github.repository_owner }}/cf-ips-to-hcloud-fw
           tags: |
             type=ref,event=branch
