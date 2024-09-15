@@ -32,7 +32,6 @@ jobs:
       - name: Harden runner1
         uses: step-security/harden-runner@int-sh
         with:
-          disable-sudo: true
           egress-policy: block
           allowed-endpoints: >
             api.dso.docker.com:443
