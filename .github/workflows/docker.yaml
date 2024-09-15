@@ -61,7 +61,18 @@ jobs:
             tuf-repo-cdn.sigstore.dev:443
             uploads.github.com:443
 
-      - run: dig @172.17.0.1 bing.com
+      - name: Create DNS configuration file
+        run: |
+          sudo mkdir -p /etc/systemd/resolved.conf.d
+          echo "[Resolve]" | sudo tee /etc/systemd/resolved.conf.d/dns_servers.conf
+          echo "DNS=127.0.0.1 172.17.0.1" | sudo tee -a /etc/systemd/resolved.conf.d/dns_servers.conf
+
+      - name: Restart systemd-resolved
+        run: sudo systemctl restart systemd-resolved
+
+      - name: Verify DNS settings
+        run: systemd-resolve --status
+      
       - name: Checkout repository
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
         with:
