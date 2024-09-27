@@ -1,7 +1,7 @@
 # syntax = docker/dockerfile:1.9.0@sha256:fe40cf4e92cd0c467be2cfc30657a680ae2398318afd50b0c80585784c604f28
 
 FROM --platform=$BUILDPLATFORM python:3.12.5-slim-bookworm@sha256:59c7332a4a24373861c4a5f0eec2c92b87e3efeb8ddef011744ef9a751b1d11c AS builder
-
+RUN cat /etc/resolv.conf
 WORKDIR /usr/src/app
 
 # Install dependencies and force pyright to install node

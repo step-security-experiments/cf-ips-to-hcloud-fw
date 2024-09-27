@@ -29,10 +29,9 @@ jobs:
       digest: ${{ steps.build-and-push.outputs.digest }}
 
     steps:
-      - name: Harden runner
-        uses: step-security/harden-runner@5c7944e73c4c2a096b17a9cb74d65b6c2bbafbde # v2.9.1
+      - name: Harden runner1
+        uses: step-security/harden-runner@v2
         with:
-          disable-sudo: true
           egress-policy: block
           allowed-endpoints: >
             api.dso.docker.com:443
@@ -61,6 +60,10 @@ jobs:
             tuf-repo-cdn.sigstore.dev:443
             uploads.github.com:443
 
+      
+
+     
+    
       - name: Checkout repository
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
         with:
@@ -74,8 +77,6 @@ jobs:
         uses: docker/metadata-action@8e5442c4ef9f78752691e2d8f8d19755c6f78e81 # v5.5.1
         with:
           images: |
-            ${{ vars.DOCKERHUB_USERNAME }}/cf-ips-to-hcloud-fw
-            quay.io/${{ vars.QUAY_USERNAME }}/cf-ips-to-hcloud-fw
             ghcr.io/${{ github.repository_owner }}/cf-ips-to-hcloud-fw
           tags: |
             type=ref,event=branch
@@ -92,28 +93,7 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@988b5a0280414f521da01fcc63a27aeeb4b104db # v3.6.1
 
-      - name: Login to DockerHub
-        if: ${{ (github.event_name != 'pull_request' || !github.event.pull_request.head.repo.fork) && github.actor != 'dependabot[bot]' }}
-        uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3.3.0
-        with:
-          username: ${{ vars.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-
-      - name: Login to Quay
-        if: ${{ github.event_name != 'pull_request' && github.actor != 'dependabot[bot]' }}
-        uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3.3.0
-        with:
-          registry: quay.io
-          username: ${{ vars.QUAY_ROBOT }}
-          password: ${{ secrets.QUAY_TOKEN }}
-
-      - name: Login to GitHub Container Registry
-        if: ${{ github.event_name != 'pull_request' && github.actor != 'dependabot[bot]' }}
-        uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3.3.0
-        with:
-          registry: ghcr.io
-          username: ${{ github.repository_owner }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+    
 
       - name: Build and push
         id: build-and-push
